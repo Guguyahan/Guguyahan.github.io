@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高等学籍</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+      background: #f5f5f5;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* 顶部导航 */
+    .nav-bar {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 16px;
+      position: relative;
+      font-size: 17px;
+      font-weight: 500;
+      color: #111;
+    }
+    .nav-bar .back {
+      position: absolute;
+      left: 16px;
+      font-size: 20px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    /* 横幅占位框 */
+    .banner-placeholder {
+      margin: 12px 12px;
+      background: #e8e8e8;
+      border-radius: 10px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 13px;
+      border: 2px dashed #ccc;
+    }
+
+    /* 菜单卡片 */
+    .menu-card {
+      background: #fff;
+      border-radius: 12px;
+      margin: 10px 12px;
+      padding: 0 16px;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-icon {
+      width: 36px;
+      height: 36px;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-img {
+      width: 28px;
+      height: 28px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .icon-check {
+      width: 28px;
+      height: 28px;
+      background: #3dba7c;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+    .menu-label {
+      flex: 1;
+      font-size: 15px;
+      color: #222;
+    }
+    .menu-right {
+      color: #999;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .arrow { color: #ccc; font-size: 16px; }
+
+    /* 绿色信息卡 */
+    .info-card {
+      background: #3dba7c;
+      border-radius: 12px;
+      margin: 10px 12px;
+      padding: 20px 16px;
+      color: white;
+    }
+    .photos-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .photo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .photo-img {
+      width: 72px;
+      height: 90px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .photo-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+    }
+    .person-info {
+      padding-top: 4px;
+    }
+    .person-name {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .person-meta {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.3);
+      margin: 14px 0;
+    }
+    .school-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .school-name {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .degree-tag {
+      background: rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 2px 10px;
+      font-size: 13px;
+    }
+    .major-row {
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .major-sep { color: rgba(255,255,255,0.5); }
+
+    /* 详情表格 */
+    .detail-table {
+      background: #fff;
+      border-radius: 12px;
+      margin: 10px 12px;
+      padding: 4px 16px;
+    }
+    .detail-row {
+      display: flex;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-key {
+      width: 90px;
+      font-size: 14px;
+      color: #999;
+      text-align: right;
+      flex-shrink: 0;
+      padding-right: 16px;
+    }
+    .detail-val {
+      flex: 1;
+      font-size: 14px;
+      color: #222;
+    }
+
+    /* 底部按钮 */
+    .btn-bottom {
+      margin: 16px 12px 30px;
+      background: #3dba7c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      width: calc(100% - 24px);
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <div class="nav-bar">
+    <a class="back" href="#">‹</a>
+    高等学籍
+  </div>
+
+  <!-- 横幅占位框（原"2026届高校毕业生就业进展调查"） -->
+  <div class="banner-placeholder">图片占位区域</div>
+
+  <!-- 菜单卡片 -->
+  <div class="menu-card">
+    <div class="menu-item">
+      <div class="menu-icon">
+        <div class="icon-img">🖼</div>
+      </div>
+      <span class="menu-label">查看图像采集码</span>
+      <span class="menu-right"><span class="arrow">›</span></span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-icon">
+        <div class="icon-check">✓</div>
+      </div>
+      <span class="menu-label">学历照片正确</span>
+      <span class="menu-right">修改 <span class="arrow">›</span></span>
+    </div>
+  </div>
+
+  <!-- 绿色信息卡 -->
+  <div class="info-card">
+    <div class="photos-row">
+      <div class="photo-box">
+        <div class="photo-img"></div>
+        <span class="photo-label">录取照片</span>
+      </div>
+      <div class="photo-box">
+        <div class="photo-img"></div>
+        <span class="photo-label">学历照片</span>
+      </div>
+      <div class="person-info">
+        <div class="person-name">杨箫</div>
+        <div class="person-meta">男 &nbsp;2002年03月13日</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="school-row">
+      <span class="school-name">宁波诺丁汉大学</span>
+      <span class="degree-tag">本科</span>
+    </div>
+    <div class="major-row">
+      <span>国际商务(国际商务经济学)</span>
+      <span class="major-sep">|</span>
+      <span>普通全日制</span>
+    </div>
+  </div>
+
+  <!-- 详情表格 -->
+  <div class="detail-table">
+    <div class="detail-row">
+      <span class="detail-key">民族</span>
+      <span class="detail-val">蒙古族</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">证件号码</span>
+      <span class="detail-val">210103200203130332</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">学制</span>
+      <span class="detail-val">4 年</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">学历类别</span>
+      <span class="detail-val">普通高等教育</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">分院</span>
+      <span class="detail-val"></span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">系所</span>
+      <span class="detail-val"></span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">班级</span>
+      <span class="detail-val"></span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">学号</span>
+      <span class="detail-val">20321697</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">入学日期</span>
+      <span class="detail-val">2020年09月14日</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">学籍状态</span>
+      <span class="detail-val">在籍（注册学籍）</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">预计毕业日期</span>
+      <span class="detail-val">2026年07月01日</span>
+    </div>
+  </div>
+
+  <!-- 底部按钮 -->
+  <button class="btn-bottom">查看验证报告</button>
+
+</body>
+</html>
